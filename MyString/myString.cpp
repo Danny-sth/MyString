@@ -10,13 +10,13 @@ private:
 
 public:
 
-	MyString() // конструктор класса без параметров
+	MyString() 
 	{
 		str = nullptr;
 		length = 0;
 	}
 
-	MyString(const char* str) // конструктор класса с параметрами
+	MyString(const char* str) 
 	{
 		length = strlen(str);
 		this->str = new char[length + 1];
@@ -28,7 +28,7 @@ public:
 		this->str[length] = '\0';
 	}
 
-	MyString(const MyString& other) // конструктор копирования, создание копии обьекта но в другой области памяти
+	MyString(const MyString& other) 
 	{
 		length = strlen(other.str);
 		this->str = new char[length + 1];
@@ -41,15 +41,14 @@ public:
 		this->str[length] = '\0';
 	}
 
-	MyString(MyString&& other) // конструктор перемещения, присвоение адреса на обьекты в динамической памяти
-		// указателю обьекта this c последующим затиранием указателя переданного обьекта
+	MyString(MyString&& other) 
 	{
 		this->length = other.length;
 		this->str = other.str;
 		other.str = nullptr;
 	}
 
-	~MyString() // деструктор, служит для освобождения динамической памяти
+	~MyString() 
 	{
 		delete[] this->str;
 	}
@@ -59,7 +58,7 @@ public:
 		std::cout << this->str << std::endl;
 	}
 
-	MyString& operator =(const MyString& other) // оператор присваивания
+	MyString& operator =(const MyString& other) 
 	{
 		if (this->str != nullptr)
 		{
@@ -77,7 +76,7 @@ public:
 		return *this;
 	}
 
-	MyString& operator +(const MyString& other) // конкатенация
+	MyString& operator +(const MyString& other) 
 	{
 		MyString newString;
 
@@ -101,12 +100,12 @@ public:
 		return newString;
 	}
 
-	int length() // возвращает длину строки
+	int length()
 	{
 		return length;
 	}
 
-	bool operator ==(const MyString& other) // оператор сравнения
+	bool operator ==(const MyString& other)
 	{
 		if (this->length != other.length)
 			return false;

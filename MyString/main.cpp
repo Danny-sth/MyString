@@ -14,6 +14,7 @@ int main()
 	d = a + b + c;
 	d.print();
 
+	c.operator==(d);
 
 	return 0;
 }
