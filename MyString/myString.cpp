@@ -1,131 +1,122 @@
-#include "Header.h";
+#include "MyString.h";
 
 
-class MyString
+
+MyString::MyString()
 {
-private:
+	str = nullptr;
+	this->length = 0;
+}
 
-	char* str;
-	int length;
+MyString::MyString(const char* str)
+{
+	length = strlen(str);
+	this->str = new char[length + 1];
 
-public:
-
-	MyString() 
+	for (int i = 0; i < length; i++)
 	{
-		str = nullptr;
-		length = 0;
+		this->str[i] = str[i];
 	}
+	this->str[length] = '\0';
+}
 
-	MyString(const char* str) 
+MyString::MyString(const MyString& other)
+{
+	length = strlen(other.str);
+	this->str = new char[length + 1];
+
+
+	for (int i = 0; i < length; i++)
 	{
-		length = strlen(str);
-		this->str = new char[length + 1];
-
-		for (int i = 0; i < length; i++)
-		{
-			this->str[i] = str[i];
-		}
-		this->str[length] = '\0';
+		this->str[i] = other.str[i];
 	}
+	this->str[length] = '\0';
+}
 
-	MyString(const MyString& other) 
-	{
-		length = strlen(other.str);
-		this->str = new char[length + 1];
+MyString::MyString(MyString&& other)
+{
+	this->length = other.length;
+	this->str = other.str;
+	other.str = nullptr;
+}
 
+MyString::~MyString()
+{
+	delete[] this->str;
+}
 
-		for (int i = 0; i < length; i++)
-		{
-			this->str[i] = other.str[i];
-		}
-		this->str[length] = '\0';
-	}
+void MyString::print()
+{
+	std::cout << this->str << std::endl;
+}
 
-	MyString(MyString&& other) 
-	{
-		this->length = other.length;
-		this->str = other.str;
-		other.str = nullptr;
-	}
-
-	~MyString() 
+MyString& MyString::operator =(const MyString& other)
+{
+	if (this->str != nullptr)
 	{
 		delete[] this->str;
 	}
 
-	void print()
+	int size = strlen(other.str);
+	this->str = new char[size + 1];
+
+	for (int i = 0; i < size; i++)
 	{
-		std::cout << this->str << std::endl;
+		this->str[i] = other.str[i];
+	}
+	this->str[size] = '\0';
+	return *this;
+}
+
+MyString& MyString::operator +(const MyString& other)
+{
+	MyString newString;
+
+	int thisSize = strlen(this->str);
+	int otherSize = strlen(other.str);
+	newString.length = thisSize + otherSize;
+
+	newString.str = new char[thisSize + otherSize + 1];
+
+	int i = 0;
+	for (; i < thisSize; i++)
+	{
+		newString.str[i] = this->str[i];
 	}
 
-	MyString& operator =(const MyString& other) 
+	for (int j = 0; j < otherSize; j++, i++)
 	{
-		if (this->str != nullptr)
-		{
-			delete[] this->str;
-		}
-
-		int size = strlen(other.str);
-		this->str = new char[size + 1];
-
-		for (int i = 0; i < size; i++)
-		{
-			this->str[i] = other.str[i];
-		}
-		this->str[size] = '\0';
-		return *this;
+		newString.str[i] = other.str[j];
 	}
+	newString.str[thisSize + otherSize] = '\0';
+	return newString;
+}
 
-	MyString& operator +(const MyString& other) 
+int MyString::getLength()
+{
+	return length;
+}
+
+bool MyString::operator ==(const MyString& other)
+{
+	if (this->length != other.length)
+		return false;
+
+
+	for (int i = 0; i < this->length; i++)
 	{
-		MyString newString;
-
-		int thisSize = strlen(this->str);
-		int otherSize = strlen(other.str);
-		newString.length = thisSize + otherSize;
-
-		newString.str = new char[thisSize + otherSize + 1];
-
-		int i = 0;
-		for (; i < thisSize; i++)
-		{
-			newString.str[i] = this->str[i];
-		}
-
-		for (int j = 0; j < otherSize; j++, i++)
-		{
-			newString.str[i] = other.str[j];
-		}
-		newString.str[thisSize + otherSize] = '\0';
-		return newString;
-	}
-
-	int length()
-	{
-		return length;
-	}
-
-	bool operator ==(const MyString& other)
-	{
-		if (this->length != other.length)
+		if (this->str[i] != other.str[i])
 			return false;
-
-
-		for (int i = 0; i < this->length; i++)
-		{
-			if (this->str[i] != other.str[i])
-				return false;
-		}
-		return true;
 	}
+	return true;
+}
 
-	bool operator !=(const MyString& other)
-	{
-		return !(this->operator==(other));
-	}
+bool MyString::operator !=(const MyString& other)
+{
+	return !(this->operator==(other));
+}
 
-	char& operator [](int index)
-	{
-		return this->str[index];
-	}
-};
+char& MyString::operator [](int index)
+{
+	return this->str[index];
+}

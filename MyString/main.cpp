@@ -1,5 +1,4 @@
-#include "Header.h"; 
-
+#include "MyString.h"; 
 
 int main()
 {
